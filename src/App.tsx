@@ -1,40 +1,37 @@
 import React from 'react';
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
+import { useGetProjects } from './gql/hooks/projectHooks';
 import './index.css';
 
-const App: React.FC = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  console.log("Remote App One render", location.pathname);
+function ProjectList() {
+  const { data: projects, isPending, isError } = useGetProjects();
 
-function Home() {
-  console.log('rendering Home');
-  const navigate = useNavigate();
+  if (isPending) return <div>Loading...</div>;
+  if (isError) return <div>Failed to load projects.</div>;
 
   return (
     <div>
-      <h1>Hey there! I'm the Project Manager app!</h1>
-      <button onClick={() => navigate('feck')}>Feck!</button>
+      <h1>Projects</h1>
+      {projects?.length === 0 && <p>No projects yet.</p>}
+      <ul>
+        {projects?.map((project) => (
+          <li key={project.id}>{project.name}</li>
+        ))}
+      </ul>
     </div>
   );
 }
 
-  function Feck() {
-    console.log('rendering Feck');
-    return <div>Hey there, Feck!</div>;
-  }
+function NotFound() {
+  return <div>Not found.</div>;
+}
 
-  function NotFound() {
-    console.log('rendering NotFound');
-    return <div>Error, Will Robinson!</div>;
-  }
-
+const App: React.FC = () => {
   return (
     <Routes>
-      <Route index element={<Home />} />
-      <Route path="feck" element={<Feck />} />
+      <Route index element={<ProjectList />} />
       <Route path="*" element={<NotFound />} />
-    </Routes >
+    </Routes>
   );
 }
 
