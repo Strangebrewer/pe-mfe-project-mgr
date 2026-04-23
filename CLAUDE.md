@@ -2,7 +2,7 @@
 
 ## What This Is
 
-GraphQL MFE for project and task management. Basic functionality deployed; needs significant work.
+GraphQL MFE for project and task management. Full CRUD implemented for both projects and tasks.
 
 Port: 3005. Accessed via the shell at `/projects/*`.
 
@@ -24,17 +24,26 @@ Tasks belong to a project. The backend query for tasks is `getTasksByProject(pro
 
 ## What's Implemented
 
-- `GET_PROJECTS` — `getProjects` query; returns `id`, `name`, `description`, `status`, `dueDate`
-- Index page displaying project list
+**GQL layer** (`src/gql/`):
+- `GET_PROJECTS` / `GET_PROJECT` — list and single-project queries
+- `CREATE_PROJECT` / `UPDATE_PROJECT` / `DELETE_PROJECT` — full project CRUD
+- `GET_TASKS_BY_PROJECT` — tasks scoped to a project (no global get-all-tasks)
+- `CREATE_TASK` / `UPDATE_TASK` / `DELETE_TASK` — full task CRUD
+- All queries share a `PROJECT_FIELDS` / `TASK_FIELDS` fragment string
+- `useUpdateProject` sets single-project cache directly on success; also invalidates list
+- `useDeleteTask` accepts `{ id, projectId }` so it can invalidate the correct task list cache key
 
----
+**UI** (`src/components/`):
+- `StatusChip` — color-coded chip for both `ProjectStatus` and `TaskStatus`
+- `ProjectCard` — clickable list row with status chip and due date; navigates to detail
+- `CreateProjectModal` — modal; submit requires name
+- `ProjectDetail` — detail view at `/:id`; inline edit/delete for the project; task list section with "New Task" button
+- `TaskCard` — inline edit/delete per task (no separate detail route needed)
+- `CreateTaskModal` — modal; projectId pre-wired from route params
 
-## What's Not Here Yet
-
-- Task queries (including `getTasksByProject`)
-- Create/update/delete mutations for projects and tasks
-- Project detail page
-- Task display
+**Routes:**
+- `/` — project list with status filter chips and "New Project" button
+- `/:id` — project detail + task list
 
 ---
 
@@ -63,6 +72,9 @@ No intermediate API layer — hooks call `gqlRequest` directly.
 - `GQL_URL` → Apollo Router URL (default: `http://localhost:4000`)
 
 ---
+
+## Routing
+MFE routes must NOT repeat the shell path prefix. Shell mounts at `/projects/*`; inside the MFE use `path=":id"` (not `path="projects/:id"`) and `navigate(project.id)` (not `navigate(`projects/${project.id}`)`).
 
 ## Tailwind
 Uses `tw:` prefix (`tw:flex`, `tw:text-sm`, etc.) — required by the MFE Tailwind config.
