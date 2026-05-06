@@ -13,7 +13,7 @@ export default function ProjectCard({ project }: Props) {
   return (
     <div
       onClick={() => navigate(project.id)}
-      className="tw:border tw:border-[rgba(188,19,254,0.3)] tw:rounded-lg tw:p-4 tw:cursor-pointer tw:hover:border-[#BC13FE] tw:hover:bg-[rgba(188,19,254,0.08)] tw:transition-colors"
+      className="tw:bg-surface tw:border tw:border-purpleBorder tw:rounded-lg tw:p-4 tw:cursor-pointer tw:hover:border-purple tw:hover:bg-purpleFaint tw:hover:shadow-[0_0_10px] tw:hover:shadow-blueBorder tw:transition-all"
     >
       <div className="tw:flex tw:items-start tw:justify-between tw:gap-4">
         <div className="tw:flex-1 tw:min-w-0">
