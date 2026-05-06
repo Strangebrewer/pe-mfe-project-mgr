@@ -4,12 +4,16 @@ import { useDeleteProject, useGetProject, useUpdateProject } from '../gql/hooks/
 import { useGetTasksByProject } from '../gql/hooks/taskHooks';
 import { ProjectStatus } from '../types/projectMgr';
 import type { Project } from '../types/projectMgr';
+import { Button } from '@bka-stuff/pe-mfe-utils';
 import StatusChip from './StatusChip';
 import TaskCard from './TaskCard';
 import CreateTaskModal from './CreateTaskModal';
 
 const inputCls =
-  'tw:w-full tw:border tw:border-gray-300 tw:rounded tw:px-3 tw:py-1.5 tw:text-sm tw:focus:outline-none tw:focus:ring-1 tw:focus:ring-blue-400';
+  'tw:w-full tw:border tw:border-[#BC13FE] tw:rounded tw:px-3 tw:py-1.5 tw:text-sm tw:bg-[#0d0a14] tw:text-[#f0e6ff] tw:focus:outline-none tw:focus:ring-1 tw:focus:ring-[#BC13FE]';
+
+const inlineCls =
+  'tw:border tw:border-[#BC13FE] tw:rounded tw:px-2 tw:py-1.5 tw:text-sm tw:bg-[#0d0a14] tw:text-[#f0e6ff] tw:focus:outline-none tw:focus:ring-1 tw:focus:ring-[#BC13FE]';
 
 const PROJECT_STATUS_OPTIONS = [
   { value: ProjectStatus.NOT_STARTED, label: 'Not Started' },
@@ -31,8 +35,8 @@ export default function ProjectDetail() {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [showTaskModal, setShowTaskModal] = useState(false);
 
-  if (isPending) return <div className="tw:p-6 tw:text-gray-500">Loading...</div>;
-  if (isError || !project) return <div className="tw:p-6 tw:text-red-500">Project not found.</div>;
+  if (isPending) return <div className="tw:p-6 tw:text-[#c4b5fd]">Loading...</div>;
+  if (isError || !project) return <div className="tw:p-6 tw:text-[#e22c5a]">Project not found.</div>;
 
   const enterEdit = () => {
     setDraft({ ...project });
@@ -69,7 +73,7 @@ export default function ProjectDetail() {
     <div className="tw:max-w-2xl tw:mx-auto tw:px-6 tw:pt-6 tw:pb-16">
       <button
         onClick={() => navigate('/projects')}
-        className="tw:text-sm tw:text-blue-600 tw:hover:underline tw:mb-6 tw:inline-flex tw:items-center tw:gap-1"
+        className="tw:text-sm tw:text-[#00E5FF] tw:hover:underline tw:mb-6 tw:inline-flex tw:items-center tw:gap-1"
       >
         ← Back
       </button>
@@ -83,7 +87,7 @@ export default function ProjectDetail() {
             className={`${inputCls} tw:text-xl tw:font-bold tw:flex-1`}
           />
         ) : (
-          <h1 className="tw:text-2xl tw:font-bold tw:text-gray-900 tw:flex-1">{d.name}</h1>
+          <h1 className="tw:text-2xl tw:font-bold tw:text-[#f0e6ff] tw:flex-1">{d.name}</h1>
         )}
 
         <div className="tw:flex tw:items-center tw:gap-2 tw:shrink-0">
@@ -91,31 +95,31 @@ export default function ProjectDetail() {
             <>
               <button
                 onClick={cancelEdit}
-                className="tw:px-3 tw:py-1.5 tw:text-sm tw:border tw:border-gray-300 tw:rounded tw:hover:bg-gray-50"
+                className="tw:px-3 tw:py-1.5 tw:text-sm tw:border tw:border-[#c4b5fd] tw:text-[#c4b5fd] tw:rounded tw:hover:bg-[rgba(196,181,253,0.1)]"
               >
                 Cancel
               </button>
               <button
                 onClick={save}
                 disabled={updateProject.isPending || !d.name}
-                className="tw:px-3 tw:py-1.5 tw:text-sm tw:bg-blue-600 tw:text-white tw:rounded tw:hover:bg-blue-700 tw:disabled:opacity-50"
+                className="tw:px-3 tw:py-1.5 tw:text-sm tw:border tw:border-[#BC13FE] tw:text-[#BC13FE] tw:rounded tw:hover:bg-[#BC13FE] tw:hover:text-white tw:disabled:opacity-50"
               >
                 {updateProject.isPending ? 'Saving...' : 'Save'}
               </button>
             </>
           ) : confirmDelete ? (
             <>
-              <span className="tw:text-sm tw:text-gray-600">Delete?</span>
+              <span className="tw:text-sm tw:text-[#c4b5fd]">Delete?</span>
               <button
                 onClick={handleDelete}
                 disabled={deleteProject.isPending}
-                className="tw:px-3 tw:py-1.5 tw:text-sm tw:bg-red-600 tw:text-white tw:rounded tw:hover:bg-red-700 tw:disabled:opacity-50"
+                className="tw:px-3 tw:py-1.5 tw:text-sm tw:bg-[#e22c5a] tw:text-white tw:rounded tw:hover:bg-[#c01848] tw:disabled:opacity-50"
               >
                 {deleteProject.isPending ? 'Deleting...' : 'Yes'}
               </button>
               <button
                 onClick={() => setConfirmDelete(false)}
-                className="tw:px-3 tw:py-1.5 tw:text-sm tw:border tw:border-gray-300 tw:rounded tw:hover:bg-gray-50"
+                className="tw:px-3 tw:py-1.5 tw:text-sm tw:border tw:border-[#c4b5fd] tw:text-[#c4b5fd] tw:rounded tw:hover:bg-[rgba(196,181,253,0.1)]"
               >
                 No
               </button>
@@ -124,13 +128,13 @@ export default function ProjectDetail() {
             <>
               <button
                 onClick={enterEdit}
-                className="tw:px-3 tw:py-1.5 tw:text-sm tw:border tw:border-gray-300 tw:rounded tw:hover:bg-gray-50"
+                className="tw:px-3 tw:py-1.5 tw:text-sm tw:border tw:border-[#c4b5fd] tw:text-[#c4b5fd] tw:rounded tw:hover:bg-[rgba(196,181,253,0.1)]"
               >
                 Edit
               </button>
               <button
                 onClick={() => setConfirmDelete(true)}
-                className="tw:px-3 tw:py-1.5 tw:text-sm tw:border tw:border-red-300 tw:text-red-600 tw:rounded tw:hover:bg-red-50"
+                className="tw:px-3 tw:py-1.5 tw:text-sm tw:border tw:border-[#e22c5a] tw:text-[#e22c5a] tw:rounded tw:hover:bg-[rgba(226,44,90,0.1)]"
               >
                 Delete
               </button>
@@ -151,7 +155,7 @@ export default function ProjectDetail() {
               className={inputCls}
             />
           ) : (
-            <p className="tw:text-gray-700">{d.description}</p>
+            <p className="tw:text-[#f0e6ff]">{d.description}</p>
           )}
         </div>
       )}
@@ -162,13 +166,13 @@ export default function ProjectDetail() {
           {editing ? (
             <>
               <div className="tw:flex tw:flex-col tw:gap-1">
-                <span className="tw:text-xs tw:text-gray-500">Status</span>
+                <span className="tw:text-xs tw:text-[#c4b5fd]">Status</span>
                 <select
                   value={d.status ?? ''}
                   onChange={(e) =>
                     patch({ status: (e.target.value as ProjectStatus) || undefined })
                   }
-                  className="tw:border tw:border-gray-300 tw:rounded tw:px-2 tw:py-1.5 tw:text-sm tw:focus:outline-none tw:focus:ring-1 tw:focus:ring-blue-400"
+                  className={inlineCls}
                 >
                   <option value="">None</option>
                   {PROJECT_STATUS_OPTIONS.map((opt) => (
@@ -179,12 +183,12 @@ export default function ProjectDetail() {
                 </select>
               </div>
               <div className="tw:flex tw:flex-col tw:gap-1">
-                <span className="tw:text-xs tw:text-gray-500">Due Date</span>
+                <span className="tw:text-xs tw:text-[#c4b5fd]">Due Date</span>
                 <input
                   type="date"
                   value={d.dueDate ?? ''}
                   onChange={(e) => patch({ dueDate: e.target.value || undefined })}
-                  className="tw:border tw:border-gray-300 tw:rounded tw:px-2 tw:py-1.5 tw:text-sm tw:focus:outline-none tw:focus:ring-1 tw:focus:ring-blue-400"
+                  className={inlineCls}
                 />
               </div>
             </>
@@ -192,7 +196,7 @@ export default function ProjectDetail() {
             <>
               {d.status && <StatusChip status={d.status} />}
               {d.dueDate && (
-                <span className="tw:text-sm tw:text-gray-500">Due {d.dueDate}</span>
+                <span className="tw:text-sm tw:text-[#c4b5fd]">Due {d.dueDate}</span>
               )}
             </>
           )}
@@ -200,25 +204,20 @@ export default function ProjectDetail() {
       )}
 
       {updateProject.isError && (
-        <p className="tw:text-red-500 tw:text-sm tw:mb-4">Failed to save changes.</p>
+        <p className="tw:text-[#e22c5a] tw:text-sm tw:mb-4">Failed to save changes.</p>
       )}
 
       {/* Tasks section */}
-      <div className="tw:border-t tw:border-gray-100 tw:pt-6">
+      <div className="tw:border-t tw:border-[rgba(188,19,254,0.2)] tw:pt-6">
         <div className="tw:flex tw:justify-between tw:items-center tw:mb-4">
-          <h2 className="tw:text-lg tw:font-semibold tw:text-gray-900">Tasks</h2>
-          <button
-            onClick={() => setShowTaskModal(true)}
-            className="tw:px-3 tw:py-1.5 tw:text-sm tw:bg-blue-600 tw:text-white tw:rounded tw:hover:bg-blue-700"
-          >
-            New Task
-          </button>
+          <h2 className="tw:text-lg tw:font-semibold tw:text-[#f0e6ff]">Tasks</h2>
+          <Button last color="purple" text="New Task" onClick={() => setShowTaskModal(true)} />
         </div>
 
         {tasksPending ? (
-          <p className="tw:text-gray-400 tw:text-sm">Loading tasks...</p>
+          <p className="tw:text-[#c4b5fd] tw:text-sm">Loading tasks...</p>
         ) : tasks?.length === 0 ? (
-          <p className="tw:text-gray-400 tw:text-sm">No tasks yet.</p>
+          <p className="tw:text-[#c4b5fd] tw:text-sm">No tasks yet.</p>
         ) : (
           <div className="tw:flex tw:flex-col tw:gap-3">
             {tasks?.map((task) => (

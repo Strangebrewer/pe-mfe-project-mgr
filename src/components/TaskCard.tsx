@@ -9,7 +9,7 @@ type Props = {
 };
 
 const inputCls =
-  'tw:w-full tw:border tw:border-gray-300 tw:rounded tw:px-3 tw:py-1.5 tw:text-sm tw:focus:outline-none tw:focus:ring-1 tw:focus:ring-blue-400';
+  'tw:w-full tw:border tw:border-[#BC13FE] tw:rounded tw:px-3 tw:py-1.5 tw:text-sm tw:bg-[#0d0a14] tw:text-[#f0e6ff] tw:focus:outline-none tw:focus:ring-1 tw:focus:ring-[#BC13FE]';
 
 const TASK_STATUS_OPTIONS = [
   { value: TaskStatus.TODO, label: 'To Do' },
@@ -49,7 +49,7 @@ export default function TaskCard({ task }: Props) {
   const patch = (fields: Partial<Task>) => setDraft((prev) => ({ ...prev, ...fields }));
 
   return (
-    <div className="tw:border tw:border-gray-200 tw:rounded-lg tw:p-4">
+    <div className="tw:border tw:border-[rgba(188,19,254,0.3)] tw:rounded-lg tw:p-4">
       {editing ? (
         <div className="tw:flex tw:flex-col tw:gap-3">
           <input
@@ -87,19 +87,19 @@ export default function TaskCard({ task }: Props) {
             />
           </div>
           {updateTask.isError && (
-            <p className="tw:text-red-500 tw:text-xs">Failed to save changes.</p>
+            <p className="tw:text-[#e22c5a] tw:text-xs">Failed to save changes.</p>
           )}
           <div className="tw:flex tw:gap-2 tw:justify-end">
             <button
               onClick={cancelEdit}
-              className="tw:px-3 tw:py-1.5 tw:text-sm tw:border tw:border-gray-300 tw:rounded tw:hover:bg-gray-50"
+              className="tw:px-3 tw:py-1.5 tw:text-sm tw:border tw:border-[#c4b5fd] tw:text-[#c4b5fd] tw:rounded tw:hover:bg-[rgba(196,181,253,0.1)]"
             >
               Cancel
             </button>
             <button
               onClick={save}
               disabled={updateTask.isPending || !draft.name}
-              className="tw:px-3 tw:py-1.5 tw:text-sm tw:bg-blue-600 tw:text-white tw:rounded tw:hover:bg-blue-700 tw:disabled:opacity-50"
+              className="tw:px-3 tw:py-1.5 tw:text-sm tw:border tw:border-[#BC13FE] tw:text-[#BC13FE] tw:rounded tw:hover:bg-[#BC13FE] tw:hover:text-white tw:disabled:opacity-50"
             >
               {updateTask.isPending ? 'Saving...' : 'Save'}
             </button>
@@ -108,29 +108,29 @@ export default function TaskCard({ task }: Props) {
       ) : (
         <div className="tw:flex tw:items-start tw:gap-4">
           <div className="tw:flex-1 tw:min-w-0">
-            <p className="tw:font-medium tw:text-gray-900">{task.name}</p>
+            <p className="tw:font-medium tw:text-[#f0e6ff]">{task.name}</p>
             {task.description && (
-              <p className="tw:text-sm tw:text-gray-500 tw:mt-0.5">{task.description}</p>
+              <p className="tw:text-sm tw:text-[#c4b5fd] tw:mt-0.5">{task.description}</p>
             )}
           </div>
           <div className="tw:flex tw:items-center tw:gap-2 tw:shrink-0">
             {task.status && <StatusChip status={task.status} />}
             {task.dueDate && (
-              <span className="tw:text-xs tw:text-gray-400">Due {task.dueDate}</span>
+              <span className="tw:text-xs tw:text-[#c4b5fd]">Due {task.dueDate}</span>
             )}
             {confirmDelete ? (
               <>
-                <span className="tw:text-sm tw:text-gray-600">Delete?</span>
+                <span className="tw:text-sm tw:text-[#c4b5fd]">Delete?</span>
                 <button
                   onClick={handleDelete}
                   disabled={deleteTask.isPending}
-                  className="tw:px-2.5 tw:py-1 tw:text-xs tw:bg-red-600 tw:text-white tw:rounded tw:hover:bg-red-700 tw:disabled:opacity-50"
+                  className="tw:px-2.5 tw:py-1 tw:text-xs tw:bg-[#e22c5a] tw:text-white tw:rounded tw:hover:bg-[#c01848] tw:disabled:opacity-50"
                 >
                   {deleteTask.isPending ? '...' : 'Yes'}
                 </button>
                 <button
                   onClick={() => setConfirmDelete(false)}
-                  className="tw:px-2.5 tw:py-1 tw:text-xs tw:border tw:border-gray-300 tw:rounded tw:hover:bg-gray-50"
+                  className="tw:px-2.5 tw:py-1 tw:text-xs tw:border tw:border-[#c4b5fd] tw:text-[#c4b5fd] tw:rounded tw:hover:bg-[rgba(196,181,253,0.1)]"
                 >
                   No
                 </button>
@@ -139,13 +139,13 @@ export default function TaskCard({ task }: Props) {
               <>
                 <button
                   onClick={enterEdit}
-                  className="tw:px-2.5 tw:py-1 tw:text-xs tw:border tw:border-gray-300 tw:rounded tw:hover:bg-gray-50"
+                  className="tw:px-2.5 tw:py-1 tw:text-xs tw:border tw:border-[#c4b5fd] tw:text-[#c4b5fd] tw:rounded tw:hover:bg-[rgba(196,181,253,0.1)]"
                 >
                   Edit
                 </button>
                 <button
                   onClick={() => setConfirmDelete(true)}
-                  className="tw:px-2.5 tw:py-1 tw:text-xs tw:border tw:border-red-300 tw:text-red-600 tw:rounded tw:hover:bg-red-50"
+                  className="tw:px-2.5 tw:py-1 tw:text-xs tw:border tw:border-[#e22c5a] tw:text-[#e22c5a] tw:rounded tw:hover:bg-[rgba(226,44,90,0.1)]"
                 >
                   Delete
                 </button>

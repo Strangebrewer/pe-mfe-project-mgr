@@ -8,7 +8,7 @@ type Props = {
 };
 
 const inputCls =
-  'tw:w-full tw:border tw:border-gray-300 tw:rounded tw:px-3 tw:py-1.5 tw:text-sm tw:focus:outline-none tw:focus:ring-1 tw:focus:ring-blue-400';
+  'tw:w-full tw:border tw:border-[#BC13FE] tw:rounded tw:px-3 tw:py-1.5 tw:text-sm tw:bg-[#0d0a14] tw:text-[#f0e6ff] tw:focus:outline-none tw:focus:ring-1 tw:focus:ring-[#BC13FE]';
 
 const STATUS_OPTIONS = [
   { value: TaskStatus.TODO, label: 'To Do' },
@@ -19,7 +19,7 @@ const STATUS_OPTIONS = [
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="tw:flex tw:flex-col tw:gap-1">
-      <label className="tw:text-sm tw:font-medium tw:text-gray-700">{label}</label>
+      <label className="tw:text-sm tw:font-medium tw:text-[#c4b5fd]">{label}</label>
       {children}
     </div>
   );
@@ -48,13 +48,13 @@ export default function CreateTaskModal({ projectId, onClose }: Props) {
   };
 
   return (
-    <div className="tw:fixed tw:inset-0 tw:bg-black/50 tw:flex tw:items-center tw:justify-center tw:z-50">
-      <div className="tw:bg-white tw:rounded-lg tw:shadow-xl tw:w-full tw:max-w-lg tw:p-6">
+    <div className="tw:fixed tw:inset-0 tw:bg-[rgba(13,10,20,0.85)] tw:flex tw:items-center tw:justify-center tw:z-50">
+      <div className="tw:bg-[#1a0f2e] tw:border tw:border-[#BC13FE] tw:rounded-lg tw:shadow-xl tw:w-full tw:max-w-lg tw:p-6">
         <div className="tw:flex tw:justify-between tw:items-center tw:mb-5">
-          <h2 className="tw:text-xl tw:font-semibold tw:text-gray-900">New Task</h2>
+          <h2 className="tw:text-xl tw:font-semibold tw:text-[#f0e6ff]">New Task</h2>
           <button
             onClick={onClose}
-            className="tw:text-gray-400 tw:hover:text-gray-600 tw:text-lg tw:leading-none"
+            className="tw:text-[#c4b5fd] tw:hover:text-[#f0e6ff] tw:text-lg tw:leading-none"
           >
             ✕
           </button>
@@ -106,21 +106,21 @@ export default function CreateTaskModal({ projectId, onClose }: Props) {
           </div>
 
           {createTask.isError && (
-            <p className="tw:text-red-500 tw:text-sm">Failed to create task.</p>
+            <p className="tw:text-[#e22c5a] tw:text-sm">Failed to create task.</p>
           )}
 
-          <div className="tw:flex tw:justify-end tw:gap-3 tw:pt-2 tw:border-t tw:border-gray-100">
+          <div className="tw:flex tw:justify-end tw:gap-3 tw:pt-2 tw:border-t tw:border-[rgba(188,19,254,0.2)]">
             <button
               type="button"
               onClick={onClose}
-              className="tw:px-4 tw:py-2 tw:text-sm tw:border tw:border-gray-300 tw:rounded tw:hover:bg-gray-50"
+              className="tw:px-4 tw:py-2 tw:text-sm tw:border tw:border-[#c4b5fd] tw:text-[#c4b5fd] tw:rounded tw:hover:bg-[rgba(196,181,253,0.1)]"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={createTask.isPending || !name}
-              className="tw:px-4 tw:py-2 tw:text-sm tw:bg-blue-600 tw:text-white tw:rounded tw:hover:bg-blue-700 tw:disabled:opacity-50 tw:disabled:cursor-not-allowed"
+              className="tw:px-4 tw:py-2 tw:text-sm tw:border tw:border-[#BC13FE] tw:text-[#BC13FE] tw:rounded tw:hover:bg-[#BC13FE] tw:hover:text-white tw:disabled:opacity-50 tw:disabled:cursor-not-allowed"
             >
               {createTask.isPending ? 'Saving...' : 'Create Task'}
             </button>
