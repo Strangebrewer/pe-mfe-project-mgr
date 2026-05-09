@@ -8,8 +8,8 @@ const TASK_FIELDS = `
 `;
 
 export const GET_TASKS_BY_PROJECT = `
-  query GetTasksByProject($projectId: String!) {
-    getTasksByProject(projectId: $projectId) {
+  query GetTasksByProject($id: String!) {
+    getTasksByProject(id: $id) {
       ${TASK_FIELDS}
     }
   }
