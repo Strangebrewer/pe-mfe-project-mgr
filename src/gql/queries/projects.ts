@@ -1,3 +1,5 @@
+import { ProjectStatus } from '../../types/projectMgr';
+
 const PROJECT_FIELDS = `
   id
   name
@@ -22,21 +24,27 @@ export const GET_PROJECT = `
   }
 `;
 
-export const CREATE_PROJECT = `
-  mutation CreateProject($input: CreateProjectInput!) {
-    createProject(input: $input) {
-      ${PROJECT_FIELDS}
+export const buildCreateProject = (status?: ProjectStatus) => {
+  const statusField = status ? `, status: ${status}` : '';
+  return `
+    mutation CreateProject($name: String!, $description: String, $dueDate: String) {
+      createProject(input: { name: $name${statusField}, description: $description, dueDate: $dueDate }) {
+        ${PROJECT_FIELDS}
+      }
     }
-  }
-`;
+  `;
+};
 
-export const UPDATE_PROJECT = `
-  mutation UpdateProject($id: String!, $input: UpdateProjectInput!) {
-    updateProject(id: $id, input: $input) {
-      ${PROJECT_FIELDS}
+export const buildUpdateProject = (status?: ProjectStatus) => {
+  const statusField = status ? `status: ${status}, ` : '';
+  return `
+    mutation UpdateProject($id: String!, $name: String, $description: String, $dueDate: String) {
+      updateProject(id: $id, input: { ${statusField}name: $name, description: $description, dueDate: $dueDate }) {
+        ${PROJECT_FIELDS}
+      }
     }
-  }
-`;
+  `;
+};
 
 export const DELETE_PROJECT = `
   mutation DeleteProject($id: String!) {

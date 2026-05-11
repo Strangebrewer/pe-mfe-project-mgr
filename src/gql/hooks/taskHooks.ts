@@ -1,10 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { gqlRequest } from "../../utils/graphqlClient";
 import {
-  CREATE_TASK,
   DELETE_TASK,
   GET_TASKS_BY_PROJECT,
-  UPDATE_TASK,
+  buildCreateTask,
+  buildUpdateTask,
 } from "../queries/tasks";
 import type { Task } from "../../types/projectMgr";
 
@@ -22,10 +22,12 @@ export const useGetTasksByProject = (id: string) => {
 export const useCreateTask = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (input: Omit<Task, "id">) =>
-      gqlRequest<{ createTask: Task }>(CREATE_TASK, { input }).then(
+    mutationFn: ({ status, ...rest }: Omit<Task, "id">) => {
+      const query = buildCreateTask(status);
+      return gqlRequest<{ createTask: Task }>(query, rest).then(
         (data) => data.createTask,
-      ),
+      );
+    },
     onSuccess: (data) =>
       queryClient.invalidateQueries({
         queryKey: ["get-tasks", data.projectId],
@@ -36,10 +38,12 @@ export const useCreateTask = () => {
 export const useUpdateTask = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, ...input }: Partial<Task> & { id: string }) =>
-      gqlRequest<{ updateTask: Task }>(UPDATE_TASK, { id, input }).then(
+    mutationFn: ({ id, projectId, status, ...rest }: Partial<Task> & { id: string; projectId?: string }) => {
+      const query = buildUpdateTask(status);
+      return gqlRequest<{ updateTask: Task }>(query, { id, ...rest }).then(
         (data) => data.updateTask,
-      ),
+      );
+    },
     onSuccess: (data) =>
       queryClient.invalidateQueries({
         queryKey: ["get-tasks", data.projectId],

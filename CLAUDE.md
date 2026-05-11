@@ -64,6 +64,18 @@ src/
 
 No intermediate API layer — hooks call `gqlRequest` directly.
 
+### Enum inlining
+Apollo Router rejects enum values passed as JSON strings — both as top-level variables and as fields within an InputType variable. `status` (ProjectStatus / TaskStatus) is optional on all create/update mutations. Builder functions inline the enum value as a GraphQL literal inside the input object when provided, omit it when not:
+
+```typescript
+export const buildCreateTask = (status?: TaskStatus) => {
+  const statusField = status ? `, status: ${status}` : '';
+  return `mutation CreateTask(...) { createTask(input: { ..., ${statusField} }) { ... } }`;
+};
+```
+
+Hook extracts `status`, calls the builder, passes remaining fields as variables.
+
 ---
 
 ## env vars

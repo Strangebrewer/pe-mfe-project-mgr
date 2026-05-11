@@ -1,11 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { gqlRequest } from '../../utils/graphqlClient';
 import {
-  CREATE_PROJECT,
   DELETE_PROJECT,
   GET_PROJECT,
   GET_PROJECTS,
-  UPDATE_PROJECT,
+  buildCreateProject,
+  buildUpdateProject,
 } from '../queries/projects';
 import type { Project } from '../../types/projectMgr';
 
@@ -29,10 +29,12 @@ export const useGetProject = (id: string) => {
 export const useCreateProject = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (input: Omit<Project, 'id'>) =>
-      gqlRequest<{ createProject: Project }>(CREATE_PROJECT, { input }).then(
+    mutationFn: ({ status, ...rest }: Omit<Project, 'id'>) => {
+      const query = buildCreateProject(status);
+      return gqlRequest<{ createProject: Project }>(query, rest).then(
         (data) => data.createProject,
-      ),
+      );
+    },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['get-projects'] }),
   });
 };
@@ -40,10 +42,12 @@ export const useCreateProject = () => {
 export const useUpdateProject = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, ...input }: Partial<Project> & { id: string }) =>
-      gqlRequest<{ updateProject: Project }>(UPDATE_PROJECT, { id, input }).then(
+    mutationFn: ({ id, status, ...rest }: Partial<Project> & { id: string }) => {
+      const query = buildUpdateProject(status);
+      return gqlRequest<{ updateProject: Project }>(query, { id, ...rest }).then(
         (data) => data.updateProject,
-      ),
+      );
+    },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['get-projects'] });
       queryClient.setQueryData(['get-project', data.id], data);
