@@ -16,40 +16,16 @@ export const GET_TASKS_BY_PROJECT = `
 `;
 
 export const CREATE_TASK = `
-  mutation CreateTask(
-    $projectId: String!
-    $name: String!
-    $description: String
-    $status: TaskStatus
-    $dueDate: String
-  ) {
-    createTask(
-      projectId: $projectId
-      name: $name
-      description: $description
-      status: $status
-      dueDate: $dueDate
-    ) {
+  mutation CreateTask($input: CreateTaskInput!) {
+    createTask(input: $input) {
       ${TASK_FIELDS}
     }
   }
 `;
 
 export const UPDATE_TASK = `
-  mutation UpdateTask(
-    $id: String!
-    $name: String
-    $description: String
-    $status: TaskStatus
-    $dueDate: String
-  ) {
-    updateTask(
-      id: $id
-      name: $name
-      description: $description
-      status: $status
-      dueDate: $dueDate
-    ) {
+  mutation UpdateTask($id: String!, $input: UpdateTaskInput!) {
+    updateTask(id: $id, input: $input) {
       ${TASK_FIELDS}
     }
   }

@@ -23,38 +23,16 @@ export const GET_PROJECT = `
 `;
 
 export const CREATE_PROJECT = `
-  mutation CreateProject(
-    $name: String!
-    $description: String
-    $status: ProjectStatus
-    $dueDate: String
-  ) {
-    createProject(
-      name: $name
-      description: $description
-      status: $status
-      dueDate: $dueDate
-    ) {
+  mutation CreateProject($input: CreateProjectInput!) {
+    createProject(input: $input) {
       ${PROJECT_FIELDS}
     }
   }
 `;
 
 export const UPDATE_PROJECT = `
-  mutation UpdateProject(
-    $id: String!
-    $name: String
-    $description: String
-    $status: ProjectStatus
-    $dueDate: String
-  ) {
-    updateProject(
-      id: $id
-      name: $name
-      description: $description
-      status: $status
-      dueDate: $dueDate
-    ) {
+  mutation UpdateProject($id: String!, $input: UpdateProjectInput!) {
+    updateProject(id: $id, input: $input) {
       ${PROJECT_FIELDS}
     }
   }

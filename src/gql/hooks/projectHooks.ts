@@ -29,8 +29,8 @@ export const useGetProject = (id: string) => {
 export const useCreateProject = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (variables: Omit<Project, 'id'>) =>
-      gqlRequest<{ createProject: Project }>(CREATE_PROJECT, variables).then(
+    mutationFn: (input: Omit<Project, 'id'>) =>
+      gqlRequest<{ createProject: Project }>(CREATE_PROJECT, { input }).then(
         (data) => data.createProject,
       ),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['get-projects'] }),
@@ -40,8 +40,8 @@ export const useCreateProject = () => {
 export const useUpdateProject = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (variables: Partial<Project> & { id: string }) =>
-      gqlRequest<{ updateProject: Project }>(UPDATE_PROJECT, variables).then(
+    mutationFn: ({ id, ...input }: Partial<Project> & { id: string }) =>
+      gqlRequest<{ updateProject: Project }>(UPDATE_PROJECT, { id, input }).then(
         (data) => data.updateProject,
       ),
     onSuccess: (data) => {

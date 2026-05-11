@@ -22,8 +22,8 @@ export const useGetTasksByProject = (id: string) => {
 export const useCreateTask = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (variables: Omit<Task, "id">) =>
-      gqlRequest<{ createTask: Task }>(CREATE_TASK, variables).then(
+    mutationFn: (input: Omit<Task, "id">) =>
+      gqlRequest<{ createTask: Task }>(CREATE_TASK, { input }).then(
         (data) => data.createTask,
       ),
     onSuccess: (data) =>
@@ -36,8 +36,8 @@ export const useCreateTask = () => {
 export const useUpdateTask = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (variables: Partial<Task> & { id: string }) =>
-      gqlRequest<{ updateTask: Task }>(UPDATE_TASK, variables).then(
+    mutationFn: ({ id, ...input }: Partial<Task> & { id: string }) =>
+      gqlRequest<{ updateTask: Task }>(UPDATE_TASK, { id, input }).then(
         (data) => data.updateTask,
       ),
     onSuccess: (data) =>
