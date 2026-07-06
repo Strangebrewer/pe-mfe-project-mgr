@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useGetProjects } from './gql/hooks/projectHooks';
 import ProjectCard from './components/ProjectCard';
-import ProjectDetail from './components/ProjectDetail';
+import ProjectDetail from './components/project-detail/ProjectDetail';
 import CreateProjectModal from './components/CreateProjectModal';
 import { ProjectStatus } from './types/projectMgr';
 import { Button } from '@bka-stuff/pe-mfe-utils';
@@ -72,7 +72,7 @@ function ProjectList() {
         ))}
       </div>
 
-      {showModal && <CreateProjectModal onClose={() => setShowModal(false)} />}
+      <CreateProjectModal isOpen={showModal} onClose={() => setShowModal(false)} />
     </div>
   );
 }
