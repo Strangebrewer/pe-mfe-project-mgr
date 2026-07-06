@@ -36,7 +36,8 @@ export default function ProjectDetail() {
   const [showTaskModal, setShowTaskModal] = useState(false);
 
   if (isPending) return <div className="tw:p-6 tw:text-[#c4b5fd]">Loading...</div>;
-  if (isError || !project) return <div className="tw:p-6 tw:text-[#e22c5a]">Project not found.</div>;
+  if (isError || !project)
+    return <div className="tw:p-6 tw:text-[#e22c5a]">Project not found.</div>;
 
   const enterEdit = () => {
     setDraft({ ...project });
@@ -195,9 +196,7 @@ export default function ProjectDetail() {
           ) : (
             <>
               {d.status && <StatusChip status={d.status} />}
-              {d.dueDate && (
-                <span className="tw:text-sm tw:text-[#c4b5fd]">Due {d.dueDate}</span>
-              )}
+              {d.dueDate && <span className="tw:text-sm tw:text-[#c4b5fd]">Due {d.dueDate}</span>}
             </>
           )}
         </div>
@@ -227,9 +226,7 @@ export default function ProjectDetail() {
         )}
       </div>
 
-      {showTaskModal && (
-        <CreateTaskModal projectId={id!} onClose={() => setShowTaskModal(false)} />
-      )}
+      {showTaskModal && <CreateTaskModal projectId={id!} onClose={() => setShowTaskModal(false)} />}
     </div>
   );
 }

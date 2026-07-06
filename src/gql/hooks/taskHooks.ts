@@ -1,16 +1,16 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { gqlRequest } from "../../utils/graphqlClient";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { gqlRequest } from '../../utils/graphqlClient';
 import {
   DELETE_TASK,
   GET_TASKS_BY_PROJECT,
   buildCreateTask,
   buildUpdateTask,
-} from "../queries/tasks";
-import type { Task } from "../../types/projectMgr";
+} from '../queries/tasks';
+import type { Task } from '../../types/projectMgr';
 
 export const useGetTasksByProject = (id: string) => {
   return useQuery({
-    queryKey: ["get-tasks", id],
+    queryKey: ['get-tasks', id],
     queryFn: () =>
       gqlRequest<{ getTasksByProject: Task[] }>(GET_TASKS_BY_PROJECT, {
         id,
@@ -22,15 +22,13 @@ export const useGetTasksByProject = (id: string) => {
 export const useCreateTask = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ status, ...rest }: Omit<Task, "id">) => {
+    mutationFn: ({ status, ...rest }: Omit<Task, 'id'>) => {
       const query = buildCreateTask(status);
-      return gqlRequest<{ createTask: Task }>(query, rest).then(
-        (data) => data.createTask,
-      );
+      return gqlRequest<{ createTask: Task }>(query, rest).then((data) => data.createTask);
     },
     onSuccess: (data) =>
       queryClient.invalidateQueries({
-        queryKey: ["get-tasks", data.projectId],
+        queryKey: ['get-tasks', data.projectId],
       }),
   });
 };
@@ -38,7 +36,12 @@ export const useCreateTask = () => {
 export const useUpdateTask = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, projectId, status, ...rest }: Partial<Task> & { id: string; projectId?: string }) => {
+    mutationFn: ({
+      id,
+      projectId,
+      status,
+      ...rest
+    }: Partial<Task> & { id: string; projectId?: string }) => {
       const query = buildUpdateTask(status);
       return gqlRequest<{ updateTask: Task }>(query, { id, ...rest }).then(
         (data) => data.updateTask,
@@ -46,7 +49,7 @@ export const useUpdateTask = () => {
     },
     onSuccess: (data) =>
       queryClient.invalidateQueries({
-        queryKey: ["get-tasks", data.projectId],
+        queryKey: ['get-tasks', data.projectId],
       }),
   });
 };
@@ -63,7 +66,7 @@ export const useDeleteTask = () => {
       })),
     onSuccess: (data) =>
       queryClient.invalidateQueries({
-        queryKey: ["get-tasks", data.projectId],
+        queryKey: ['get-tasks', data.projectId],
       }),
   });
 };

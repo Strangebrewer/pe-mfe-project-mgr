@@ -67,9 +67,7 @@ export default function TaskCard({ task }: Props) {
           <div className="tw:grid tw:grid-cols-2 tw:gap-3">
             <select
               value={draft.status ?? ''}
-              onChange={(e) =>
-                patch({ status: (e.target.value as TaskStatus) || undefined })
-              }
+              onChange={(e) => patch({ status: (e.target.value as TaskStatus) || undefined })}
               className={inputCls}
             >
               <option value="">No status</option>

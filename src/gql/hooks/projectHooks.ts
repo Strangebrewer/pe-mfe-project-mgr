@@ -31,9 +31,7 @@ export const useCreateProject = () => {
   return useMutation({
     mutationFn: ({ status, ...rest }: Omit<Project, 'id'>) => {
       const query = buildCreateProject(status);
-      return gqlRequest<{ createProject: Project }>(query, rest).then(
-        (data) => data.createProject,
-      );
+      return gqlRequest<{ createProject: Project }>(query, rest).then((data) => data.createProject);
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['get-projects'] }),
   });

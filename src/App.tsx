@@ -23,9 +23,7 @@ function ProjectList() {
   if (isPending) return <div className="tw:p-6 tw:text-[#c4b5fd]">Loading...</div>;
   if (isError) return <div className="tw:p-6 tw:text-[#e22c5a]">Failed to load projects.</div>;
 
-  const filtered = activeStatus
-    ? projects?.filter((p) => p.status === activeStatus)
-    : projects;
+  const filtered = activeStatus ? projects?.filter((p) => p.status === activeStatus) : projects;
 
   return (
     <div className="tw:max-w-2xl tw:mx-auto tw:p-6">
