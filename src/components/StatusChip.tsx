@@ -1,5 +1,3 @@
-import React from 'react';
-
 const STATUS_STYLES: Record<string, string> = {
   NOT_STARTED: 'tw:bg-[rgba(196,181,253,0.15)] tw:text-[#c4b5fd]',
   IN_PROGRESS: 'tw:bg-[rgba(0,229,255,0.15)] tw:text-[#00E5FF]',

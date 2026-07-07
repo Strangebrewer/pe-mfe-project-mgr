@@ -12,11 +12,11 @@ type Props = {
 
 const ProjectDetailView: FC<Props> = ({ enterEdit, project }) => {
   const navigate = useNavigate();
-  const deleteProject = useDeleteProject();
+  const { mutate, isPending } = useDeleteProject();
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   const handleDelete = () => {
-    deleteProject.mutate(project.id, {
+    mutate(project.id, {
       onSuccess: () => navigate('/'),
     });
   };
@@ -32,9 +32,9 @@ const ProjectDetailView: FC<Props> = ({ enterEdit, project }) => {
               <span className="tw:text-sm tw:text-[#c4b5fd]">Delete?</span>
               <Button
                 onClick={handleDelete}
-                text={deleteProject.isPending ? 'Deleting...' : 'Yes'}
+                text={isPending ? 'Deleting...' : 'Yes'}
                 color="red"
-                disabled={deleteProject.isPending}
+                disabled={isPending}
                 last
               />
               <Button onClick={() => setConfirmDelete(false)} text="No" color="blue" last />
