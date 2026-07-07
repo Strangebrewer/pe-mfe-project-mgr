@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDeleteTask, useUpdateTask } from '../gql/hooks/taskHooks';
 import { TaskStatus } from '../types/projectMgr';
 import StatusChip from './StatusChip';
 import type { Task } from '../types/projectMgr';
+import { Button, GhostButton, Input, Select, Textarea } from '@bka-stuff/pe-mfe-utils';
 
 type Props = {
   task: Task;
@@ -52,25 +53,18 @@ export default function TaskCard({ task }: Props) {
     <div className="tw:border tw:border-[rgba(188,19,254,0.3)] tw:rounded-lg tw:p-4">
       {editing ? (
         <div className="tw:flex tw:flex-col tw:gap-3">
-          <input
-            value={draft.name}
-            onChange={(e) => patch({ name: e.target.value })}
-            className={inputCls}
-          />
-          <textarea
+          <Input value={draft.name} onChange={(e) => patch({ name: e.target.value })} full />
+          <Textarea
             value={draft.description ?? ''}
             onChange={(e) => patch({ description: e.target.value || undefined })}
             rows={2}
             placeholder="Description"
-            className={inputCls}
+            full
           />
           <div className="tw:grid tw:grid-cols-2 tw:gap-3">
-            <select
+            <Select
               value={draft.status ?? ''}
-              onChange={(e) =>
-                patch({ status: (e.target.value as TaskStatus) || undefined })
-              }
-              className={inputCls}
+              onChange={(e) => patch({ status: (e.target.value as TaskStatus) || undefined })}
             >
               <option value="">No status</option>
               {TASK_STATUS_OPTIONS.map((opt) => (
@@ -78,31 +72,26 @@ export default function TaskCard({ task }: Props) {
                   {opt.label}
                 </option>
               ))}
-            </select>
-            <input
+            </Select>
+            <Input
               type="date"
               value={draft.dueDate ?? ''}
               onChange={(e) => patch({ dueDate: e.target.value || undefined })}
-              className={inputCls}
             />
           </div>
           {updateTask.isError && (
             <p className="tw:text-[#e22c5a] tw:text-xs">Failed to save changes.</p>
           )}
           <div className="tw:flex tw:gap-2 tw:justify-end">
-            <button
-              onClick={cancelEdit}
-              className="tw:px-3 tw:py-1.5 tw:text-sm tw:border tw:border-[#c4b5fd] tw:text-[#c4b5fd] tw:rounded tw:hover:bg-[rgba(196,181,253,0.1)]"
-            >
-              Cancel
-            </button>
-            <button
+            <GhostButton onClick={cancelEdit} color="red" text="Cancel" size="sm" last />
+            <Button
               onClick={save}
+              text={updateTask.isPending ? 'Saving...' : 'Save'}
+              color="purple"
               disabled={updateTask.isPending || !draft.name}
-              className="tw:px-3 tw:py-1.5 tw:text-sm tw:border tw:border-[#BC13FE] tw:text-[#BC13FE] tw:rounded tw:hover:bg-[#BC13FE] tw:hover:text-white tw:disabled:opacity-50"
-            >
-              {updateTask.isPending ? 'Saving...' : 'Save'}
-            </button>
+              small
+              last
+            />
           </div>
         </div>
       ) : (
@@ -121,34 +110,26 @@ export default function TaskCard({ task }: Props) {
             {confirmDelete ? (
               <>
                 <span className="tw:text-sm tw:text-[#c4b5fd]">Delete?</span>
-                <button
+                <Button
                   onClick={handleDelete}
+                  text={deleteTask.isPending ? 'Deleting...' : 'Yes'}
+                  color="red"
                   disabled={deleteTask.isPending}
-                  className="tw:px-2.5 tw:py-1 tw:text-xs tw:bg-[#e22c5a] tw:text-white tw:rounded tw:hover:bg-[#c01848] tw:disabled:opacity-50"
-                >
-                  {deleteTask.isPending ? '...' : 'Yes'}
-                </button>
-                <button
-                  onClick={() => setConfirmDelete(false)}
-                  className="tw:px-2.5 tw:py-1 tw:text-xs tw:border tw:border-[#c4b5fd] tw:text-[#c4b5fd] tw:rounded tw:hover:bg-[rgba(196,181,253,0.1)]"
-                >
-                  No
-                </button>
+                  small
+                  last
+                />
+                <Button onClick={() => setConfirmDelete(false)} text="No" color="blue" small last />
               </>
             ) : (
               <>
-                <button
-                  onClick={enterEdit}
-                  className="tw:px-2.5 tw:py-1 tw:text-xs tw:border tw:border-[#c4b5fd] tw:text-[#c4b5fd] tw:rounded tw:hover:bg-[rgba(196,181,253,0.1)]"
-                >
-                  Edit
-                </button>
-                <button
+                <GhostButton onClick={enterEdit} text="Edit" color="blue" size="sm" last />
+                <Button
                   onClick={() => setConfirmDelete(true)}
-                  className="tw:px-2.5 tw:py-1 tw:text-xs tw:border tw:border-[#e22c5a] tw:text-[#e22c5a] tw:rounded tw:hover:bg-[rgba(226,44,90,0.1)]"
-                >
-                  Delete
-                </button>
+                  text="Delete"
+                  color="red"
+                  small
+                  last
+                />
               </>
             )}
           </div>

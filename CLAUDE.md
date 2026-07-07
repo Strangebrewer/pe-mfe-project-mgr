@@ -13,9 +13,11 @@ Port: 3005. Accessed via the shell at `/projects/*`.
 Both domains defined in `src/types/projectMgr.ts`.
 
 **Project** (`PRJ-` prefix IDs): `id`, `name`, `description?`, `status?` (enum), `dueDate?`
+
 - `ProjectStatus`: `NOT_STARTED` | `IN_PROGRESS` | `COMPLETED` | `ON_HOLD`
 
 **Task** (`TSK-` prefix IDs): `id`, `projectId`, `name`, `description?`, `status?` (enum), `dueDate?`
+
 - `TaskStatus`: `TODO` | `IN_PROGRESS` | `DONE`
 
 Tasks belong to a project. The backend query for tasks is `getTasksByProject(projectId)` — there is no global get-all-tasks query.
@@ -25,6 +27,7 @@ Tasks belong to a project. The backend query for tasks is `getTasksByProject(pro
 ## What's Implemented
 
 **GQL layer** (`src/gql/`):
+
 - `GET_PROJECTS` / `GET_PROJECT` — list and single-project queries
 - `CREATE_PROJECT` / `UPDATE_PROJECT` / `DELETE_PROJECT` — full project CRUD
 - `GET_TASKS_BY_PROJECT` — tasks scoped to a project (no global get-all-tasks)
@@ -34,6 +37,7 @@ Tasks belong to a project. The backend query for tasks is `getTasksByProject(pro
 - `useDeleteTask` accepts `{ id, projectId }` so it can invalidate the correct task list cache key
 
 **UI** (`src/components/`):
+
 - `StatusChip` — color-coded chip for both `ProjectStatus` and `TaskStatus`
 - `ProjectCard` — clickable list row with status chip and due date; navigates to detail
 - `CreateProjectModal` — modal; submit requires name
@@ -42,6 +46,7 @@ Tasks belong to a project. The backend query for tasks is `getTasksByProject(pro
 - `CreateTaskModal` — modal; projectId pre-wired from route params
 
 **Routes:**
+
 - `/` — project list with status filter chips and "New Project" button
 - `/:id` — project detail + task list
 
@@ -65,6 +70,7 @@ src/
 No intermediate API layer — hooks call `gqlRequest` directly.
 
 ### Enum inlining
+
 Apollo Router rejects enum values passed as JSON strings — both as top-level variables and as fields within an InputType variable. `status` (ProjectStatus / TaskStatus) is optional on all create/update mutations. Builder functions inline the enum value as a GraphQL literal inside the input object when provided, omit it when not:
 
 ```typescript
@@ -86,10 +92,13 @@ Hook extracts `status`, calls the builder, passes remaining fields as variables.
 ---
 
 ## Routing
+
 MFE routes must NOT repeat the shell path prefix. Shell mounts at `/projects/*`; inside the MFE use `path=":id"` (not `path="projects/:id"`) and `navigate(project.id)` (not `navigate(`projects/${project.id}`)`).
 
 ## Tailwind
+
 Uses `tw:` prefix (`tw:flex`, `tw:text-sm`, etc.) — required by the MFE Tailwind config.
 
 ## pe-mfe-utils
+
 `@bka-stuff/pe-mfe-utils` is installed via `github:` URL (public tarball). Never use `pnpm link` or workspace overrides — breaks CI.
